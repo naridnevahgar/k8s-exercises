@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aks-ingress-demo-one
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aks-ingress-demo-one
+  template:
+    metadata:
+      labels:
+        app: aks-ingress-demo-one
+    spec:
+      containers:
+      - name: aks-ingress-demo-one
+        image: neilpeterson/aks-helloworld:v1
+        ports:
+        - containerPort: 80
+        env:
+        - name: TITLE
+          value: "This is Nginx 1"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aks-ingress-demo-one
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+  selector:
+    app: aks-ingress-demo-one
